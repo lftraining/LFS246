@@ -1,0 +1,14 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: order-service
+spec:
+  template:
+    spec:
+      containers:
+      - image: docker.io/anuj812/order-service
+        env:
+        - name: customer-service-ep
+          value: http://customer-service.default.127.0.0.1.sslip.io
+        - name: product-service-ep
+          value: http://product-service.default.127.0.0.1.sslip.io
