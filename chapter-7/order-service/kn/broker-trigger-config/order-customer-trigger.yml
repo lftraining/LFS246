@@ -1,0 +1,15 @@
+apiVersion: eventing.knative.dev/v1
+kind: Trigger
+metadata:
+  name: customer-trigger
+spec:
+  broker: default
+  filter: 
+    attributes:
+      subject: "call-customer"
+  subscriber:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: customer-service-eventing
+    uri: /customers/blockAmountBT

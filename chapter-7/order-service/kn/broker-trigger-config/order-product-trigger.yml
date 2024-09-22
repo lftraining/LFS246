@@ -1,0 +1,15 @@
+apiVersion: eventing.knative.dev/v1
+kind: Trigger
+metadata:
+  name: product-trigger
+spec:
+  broker: default
+  filter: 
+    attributes:
+      subject: "call-product"
+  subscriber:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: product-service-eventing
+    uri: /products/blockBT

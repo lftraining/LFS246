@@ -1,0 +1,21 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: order-service-eventing
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/min-scale: "1"
+    spec:
+      containers:
+        - image: docker.io/knativedemo/order-service-eventing
+          env: 
+           - name: TARGET
+             value: "order-service-2"
+  traffic:
+  - latestRevision: true
+    percent: 50
+  - latestRevision: false
+    percent: 50
+    revisionName: order-service-00001

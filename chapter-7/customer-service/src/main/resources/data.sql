@@ -1,0 +1,10 @@
+insert into customer_details(id, customer_name, wallet_amount, wallet_amount_blocked) values (1, 'Cust1', 50000, 0);
+insert into customer_details(id, customer_name, wallet_amount, wallet_amount_blocked) values (2, 'Cust2', 10000, 0);
+insert into customer_details(id, customer_name, wallet_amount, wallet_amount_blocked) values (3, 'Cust3', 20000, 0);
+insert into customer_details(id, customer_name, wallet_amount, wallet_amount_blocked) values (4, 'Cust4', 35000, 0);
+insert into customer_details(id, customer_name, wallet_amount, wallet_amount_blocked) values (5, 'Cust5', 40000, 0);
+insert into customer_details(id, customer_name, wallet_amount, wallet_amount_blocked) values (6, 'Cust6', 1000, 0);
+insert into customer_details(id, customer_name, wallet_amount, wallet_amount_blocked) values (7, 'Cust7', 10000, 0);
+insert into customer_details(id, customer_name, wallet_amount, wallet_amount_blocked) values (8, 'Cust8', 10000, 0);
+insert into customer_details(id, customer_name, wallet_amount, wallet_amount_blocked) values (9, 'Cust9', 20000, 0);
+insert into customer_details(id, customer_name, wallet_amount, wallet_amount_blocked) values (10, 'Cust10', 20000, 0);

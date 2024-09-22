@@ -1,0 +1,17 @@
+spring.application.name: order-service
+spring.cloud.function.web.path: /orders
+spring.kafka.bootstrap-servers: my-cluster-kafka-bootstrap.kafka:9092
+spring:
+  h2:
+    console.enabled: true
+  datasource:
+    url: jdbc:h2:mem:order
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver  
+  jpa:
+    defer-datasource-initialization: true
+    database-platform: H2
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create-drop

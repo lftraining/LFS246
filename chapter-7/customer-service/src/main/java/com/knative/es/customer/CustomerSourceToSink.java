@@ -1,0 +1,88 @@
+package com.knative.es.customer;
+
+import java.net.URI;
+import java.util.function.Consumer;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.messaging.Message;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.knative.es.customer.model.CustomerDetails;
+import com.knative.es.customer.model.CustomerOrderStatus;
+import com.knative.es.customer.order.OrderDetails;
+import com.knative.es.customer.repository.CustomerDetailsRepository;
+
+import io.cloudevents.CloudEvent;
+import io.cloudevents.core.builder.CloudEventBuilder;
+
+@Configuration
+public class CustomerSourceToSink {
+	
+	private static Logger LOGGER = LoggerFactory.getLogger(CustomerSourceToSink.class);
+	
+	@Autowired
+	private CustomerDetailsRepository customerDetailsRepository;
+	
+	@Autowired
+	private ObjectMapper mapper;
+	
+	@Autowired
+	private KafkaTemplate<String, CloudEvent> kafkaTemplate;
+	
+	private static String TOPIC_NAME = "place-order";
+	
+	
+	@Bean
+	public Consumer<Message<OrderDetails>> blockAmount(){
+		return this::doBlockAmount;
+	}
+	
+			
+	private void doBlockAmount(Message<OrderDetails> msg) {
+		OrderDetails orderDetails = msg != null ? msg.getPayload() : null;
+		LOGGER.info("Customer-service-es :: Order Details :: "+orderDetails);
+		LOGGER.info("Customer-service-es :: Order Status :: " +  orderDetails.getOrderStatus());
+		if(orderDetails != null) {
+	        CustomerDetails customerDetails = customerDetailsRepository.findById(orderDetails.getCustId()).orElseThrow();
+	        if (CustomerOrderStatus.NEW.toString().equalsIgnoreCase(orderDetails.getOrderStatus())) {
+	            customerDetails.setWalletAmountBlocked(customerDetails.getWalletAmountBlocked() + orderDetails.getAmount());
+	            customerDetails.setWalletAmount(customerDetails.getWalletAmount() - orderDetails.getAmount());
+	            orderDetails.setOrderStatus(CustomerOrderStatus.CUSTOMER_CONFIRMED.toString());
+	            customerDetailsRepository.save(customerDetails);
+	            try {
+					kafkaTemplate.send(TOPIC_NAME, this.generateCloudEvent(orderDetails));
+				} catch (JsonProcessingException e) {
+					LOGGER.error("Error Occourred :: ", e);
+				}
+	        } else if (CustomerOrderStatus.CONFIRMED.toString().equalsIgnoreCase(orderDetails.getOrderStatus())) {
+	            customerDetails.setWalletAmountBlocked(customerDetails.getWalletAmountBlocked() - orderDetails.getAmount());
+	            customerDetailsRepository.save(customerDetails);
+	        }
+	        
+	        LOGGER.info("Customer-service-es :: Order details :: " + customerDetails);
+        }
+	}
+	
+	/**
+	 * Method used to generate cloud events
+	 * @param orderDetails
+	 * @return
+	 * @throws JsonProcessingException
+	 */
+	private CloudEvent generateCloudEvent(OrderDetails orderDetails) throws JsonProcessingException {
+		return CloudEventBuilder.v1().withData(mapper.writeValueAsBytes(orderDetails))
+				.withSource(URI.create("http://localhost"))
+                .withId(orderDetails.getId().toString())
+                .withType(orderDetails.getOrderStatus())
+                .withSubject("call-order")
+                .build();
+	}
+	
+
+}

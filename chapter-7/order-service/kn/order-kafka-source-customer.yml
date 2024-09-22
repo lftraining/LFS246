@@ -1,0 +1,16 @@
+apiVersion: sources.knative.dev/v1beta1
+kind: KafkaSource
+metadata:
+  name: order-customer-event-source
+spec:
+  bootstrapServers:
+    - my-cluster-kafka-bootstrap.kafka:9092
+  topics:
+    - block-customers
+  sink:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: customer-service-eventing
+    uri: /customers/blockAmount
+      

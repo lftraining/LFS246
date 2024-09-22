@@ -1,0 +1,16 @@
+apiVersion: sources.knative.dev/v1beta1
+kind: KafkaSource
+metadata:
+  name: order-event-source
+spec:
+  bootstrapServers:
+    - my-cluster-kafka-bootstrap.kafka:9092
+  topics:
+    - place-order
+  sink:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: order-service-eventing
+    uri: /orders/confirm
+      

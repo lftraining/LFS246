@@ -1,0 +1,15 @@
+apiVersion: eventing.knative.dev/v1
+kind: Trigger
+metadata:
+  name: order-trigger
+spec:
+  broker: default
+  filter: 
+    attributes:
+      subject: "call-order"
+  subscriber:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: order-service-eventing
+    uri: /orders/confirmOrder

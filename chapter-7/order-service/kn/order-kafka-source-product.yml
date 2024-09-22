@@ -1,0 +1,16 @@
+apiVersion: sources.knative.dev/v1beta1
+kind: KafkaSource
+metadata:
+  name: order-product-event-source
+spec:
+  bootstrapServers:
+    - my-cluster-kafka-bootstrap.kafka:9092
+  topics:
+    - block-products
+  sink:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: product-service-eventing
+    uri: /products/block
+      

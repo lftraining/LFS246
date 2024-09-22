@@ -1,0 +1,15 @@
+apiVersion: messaging.knative.dev/v1
+kind: Subscription
+metadata:
+  name: customer-subscriber
+spec:
+  channel:
+    apiVersion: messaging.knative.dev/v1
+    kind: Channel
+    name: order-kafka-channel
+  subscriber:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: customer-service-eventing
+    uri: /customers/blockAmountCS
