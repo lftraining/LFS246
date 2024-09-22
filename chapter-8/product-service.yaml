@@ -6,7 +6,7 @@ spec:
   template:
     spec:
       containers:
-      - image: docker.io/anuj812/product-service
+      - image: docker.io/knativedemo/product-service
         env:
         - name: customer-service-ep
           value: http://customer-service.default.127.0.0.1.sslip.io
