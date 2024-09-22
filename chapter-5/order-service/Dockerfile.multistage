@@ -1,0 +1,11 @@
+FROM adoptopenjdk/maven-openjdk11 AS build
+COPY src /usr/src/app/src
+COPY pom.xml /usr/src/app
+RUN mvn -f /usr/src/app/pom.xml clean install
+
+
+FROM openjdk:11-jre-slim
+COPY --from=build /usr/src/app/target/*.jar /usr/app/order-service.jar
+# ARG JAR_FILE=/usr/app/*.jar
+# COPY ${JAR_FILE} order-service.jar
+ENTRYPOINT ["java","-jar","/usr/app/order-service.jar"]

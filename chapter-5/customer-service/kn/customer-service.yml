@@ -1,0 +1,15 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: customer-service-serving
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/min-scale: "1"
+    spec:
+      containers:
+        - image: docker.io/knativedemo/customer-service
+          env: 
+           - name: order-service-ep
+             value: "http://order-service-serving.default.svc.cluster.local"

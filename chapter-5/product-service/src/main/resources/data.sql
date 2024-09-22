@@ -1,0 +1,10 @@
+insert into product_details(id, product_name, product_available, product_blocked) values (1, 'Product1', 1000, 0);
+insert into product_details(id, product_name, product_available, product_blocked) values (2, 'Product2', 100, 0);
+insert into product_details(id, product_name, product_available, product_blocked) values (3, 'Product3', 500, 0);
+insert into product_details(id, product_name, product_available, product_blocked) values (4, 'Product4', 200, 0);
+insert into product_details(id, product_name, product_available, product_blocked) values (5, 'Product5', 1000, 0);
+insert into product_details(id, product_name, product_available, product_blocked) values (6, 'Product6', 100, 0);
+insert into product_details(id, product_name, product_available, product_blocked) values (7, 'Product7', 100, 0);
+insert into product_details(id, product_name, product_available, product_blocked) values (8, 'Product8', 200, 0);
+insert into product_details(id, product_name, product_available, product_blocked) values (9, 'Product9', 300, 0);
+insert into product_details(id, product_name, product_available, product_blocked) values (10, 'Product10', 500, 0);

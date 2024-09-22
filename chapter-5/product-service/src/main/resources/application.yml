@@ -1,0 +1,10 @@
+spring.application.name: product-service
+spring.cloud.function.web.path: /products
+spring.cloud.function.definition: block;
+spring:
+  jpa:
+    defer-datasource-initialization: true
+    database-platform: H2
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create-drop
