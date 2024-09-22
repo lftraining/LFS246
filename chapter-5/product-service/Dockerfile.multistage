@@ -1,10 +1,10 @@
-FROM adoptopenjdk/maven-openjdk11 AS build
+FROM maven:3.8.3-openjdk-17 AS build
 COPY src /usr/src/app/src
 COPY pom.xml /usr/src/app
 RUN mvn -f /usr/src/app/pom.xml clean install
 
 
-FROM openjdk:11-jre-slim
+FROM openjdk:17-alpine
 COPY --from=build /usr/src/app/target/*.jar /usr/app/product-service.jar
 # ARG JAR_FILE=/usr/app/*.jar
 # COPY ${JAR_FILE} product-service.jar
